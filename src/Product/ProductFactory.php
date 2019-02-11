@@ -38,40 +38,33 @@ class ProductFactory
 {
     /**
      * @param Product $product
-     * @param $quantity
+     * @param int $quantity
+     * @param int $languageId
      * @return GrProduct
      */
-    public function createShareCodeProductFromProduct(Product $product, $quantity)
+    public function createShareCodeProductFromProduct(Product $product, $quantity, $languageId)
     {
         $categoryCollection = (new ProductCategoryCollectionFactory)->createFromCategories($product->getCategories());
         $imagesCollection = (new ProductImagesFactory)->createFromImages(
-            $product->getImages(null),
-            $this->normalizeToString($product->link_rewrite)
+            $product->getImages($languageId),
+            $product->link_rewrite[$languageId]
         );
 
-        $variant = (new ProductVariantFactory)->createFromProduct($product, $imagesCollection, $quantity);
+        $variant = (new ProductVariantFactory)->createFromProduct($product, $imagesCollection, $quantity, $languageId);
         $variantCollection = new VariantsCollection();
         $variantCollection->add($variant);
 
         $grProduct = new GrProduct(
             (int)$product->id,
-            $this->normalizeToString($product->name),
+            $product->name[$languageId],
             $variantCollection,
             $categoryCollection
         );
 
         $grProduct
-            ->setUrl((new Link())->getProductLink($product));
+            ->setUrl((new Link())->getProductLink($product, null, null, null, $languageId));
 
         return $grProduct;
     }
 
-    /**
-     * @param string $text
-     * @return mixed
-     */
-    private function normalizeToString($text)
-    {
-        return is_array($text) ? reset($text) : $text;
-    }
 }

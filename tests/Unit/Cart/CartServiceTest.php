@@ -123,6 +123,7 @@ class CartServiceTest extends BaseTestCase
 
         $getresponseProduct = (new ProductFactory())->createShareCodeProductFromProduct(
             new \Product(\ProductGenerator::PROD_1_WITH_SKU),
+            1,
             1
         );
         $productsCollection = new ProductsCollection();
@@ -178,11 +179,13 @@ class CartServiceTest extends BaseTestCase
         $productsCollection = new ProductsCollection();
         $productsCollection->add((new ProductFactory())->createShareCodeProductFromProduct(
             new \Product(\ProductGenerator::PROD_1_WITH_SKU),
+            1,
             1
         ));
         $productsCollection->add((new ProductFactory())->createShareCodeProductFromProduct(
             new \Product(\ProductGenerator::PROD_2_WITH_SKU),
-            2
+            2,
+            1
         ));
 
         $grCart = new GrCart(

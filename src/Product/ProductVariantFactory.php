@@ -44,13 +44,14 @@ class ProductVariantFactory
      * @param Product $product
      * @param ImagesCollection $imagesCollection
      * @param int $quantity
+     * @param int $languageId
      * @return Variant
      */
-    public function createFromProduct(Product $product, ImagesCollection $imagesCollection, $quantity)
+    public function createFromProduct(Product $product, ImagesCollection $imagesCollection, $quantity, $languageId)
     {
         $variant = new Variant(
             $product->id,
-            $this->normalizeToString($product->name),
+            $product->name[$languageId],
             $product->getPrice(false),
             $product->getPrice(),
             $product->reference
@@ -59,28 +60,20 @@ class ProductVariantFactory
         $variant
             ->setQuantity($quantity)
             ->setImages($imagesCollection)
-            ->setUrl((new Link())->getProductLink($product))
-            ->setDescription($this->getDescription($product));
+            ->setUrl((new Link())->getProductLink($product, false, false, false, $languageId))
+            ->setDescription($this->getDescription($product, $languageId));
 
         return $variant;
     }
 
     /**
-     * @param string $text
-     * @return mixed
-     */
-    private function normalizeToString($text)
-    {
-        return is_array($text) ? reset($text) : $text;
-    }
-
-    /**
      * @param Product $product
+     * @param int $languageId
      * @return bool|string
      */
-    private function getDescription(Product $product)
+    private function getDescription(Product $product, $languageId)
     {
-        $description = $this->normalizeToString($product->description_short);
+        $description = $product->description_short[$languageId];
 
         if (empty($description)) {
             return null;

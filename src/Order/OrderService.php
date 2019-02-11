@@ -26,6 +26,7 @@
 
 namespace GetResponse\Order;
 
+use Configuration;
 use Customer;
 use GetResponse\Product\ProductFactory;
 use GrShareCode\Api\Exception\GetresponseApiException;
@@ -97,7 +98,8 @@ class OrderService
             $productService = new ProductFactory();
             $getresponseProduct = $productService->createShareCodeProductFromProduct(
                 $prestashopProduct,
-                (int)$product['product_quantity']
+                (int)$product['product_quantity'],
+                Configuration::get('PS_LANG_DEFAULT')
             );
 
             $productsCollection->add($getresponseProduct);

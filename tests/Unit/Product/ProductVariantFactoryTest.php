@@ -48,6 +48,8 @@ class ProductVariantFactoryTest extends BaseTestCase
      */
     public function shouldCreateProduct()
     {
+        $languageId = 1;
+
         $productParams = \ProductGenerator::genProductParams(\ProductGenerator::PROD_1_WITH_SKU);
         $product = new Product(\ProductGenerator::PROD_1_WITH_SKU);
 
@@ -56,11 +58,11 @@ class ProductVariantFactoryTest extends BaseTestCase
         $imagesCollection->add(new Image('source2', 2));
         $quantity = 2;
 
-        $variant = $this->productVariantFactory->createFromProduct($product, $imagesCollection, $quantity);
+        $variant = $this->productVariantFactory->createFromProduct($product, $imagesCollection, $quantity, $languageId);
 
         $expectedVariant = new Variant(
             $productParams['id'],
-            $productParams['name'],
+            $productParams['name'][$languageId],
             $productParams['price'],
             $productParams['price_tax'],
             $productParams['reference']
@@ -70,7 +72,7 @@ class ProductVariantFactoryTest extends BaseTestCase
             ->setQuantity($quantity)
             ->setImages($imagesCollection)
             ->setUrl('http://my-prestashop.com/product/' . $productParams['id'])
-            ->setDescription($productParams['description_short']);
+            ->setDescription($productParams['description_short'][$languageId]);
 
         $this->assertEquals($expectedVariant, $variant);
     }
@@ -80,6 +82,8 @@ class ProductVariantFactoryTest extends BaseTestCase
      */
     public function shouldCreateProductWithoutShortDescription()
     {
+        $languageId = 1;
+
         $productParams = \ProductGenerator::genProductParams(\ProductGenerator::PROD_3_WITHOUT_SHORT_DESCRIPTION);
         $product = new Product(\ProductGenerator::PROD_3_WITHOUT_SHORT_DESCRIPTION);
 
@@ -88,11 +92,11 @@ class ProductVariantFactoryTest extends BaseTestCase
         $imagesCollection->add(new Image('source2', 2));
         $quantity = 2;
 
-        $variant = $this->productVariantFactory->createFromProduct($product, $imagesCollection, $quantity);
+        $variant = $this->productVariantFactory->createFromProduct($product, $imagesCollection, $quantity, $languageId);
 
         $expectedVariant = new Variant(
             $productParams['id'],
-            $productParams['name'],
+            $productParams['name'][$languageId],
             $productParams['price'],
             $productParams['price_tax'],
             $productParams['reference']

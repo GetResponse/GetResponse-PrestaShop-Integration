@@ -26,6 +26,7 @@
 
 namespace GetResponse\Export;
 
+use Configuration;
 use GetResponse\Contact\ContactCustomFieldCollectionFactory;
 use GetResponse\Customer\CustomerFactory;
 use GetResponse\Order\OrderFactory;
@@ -33,7 +34,10 @@ use GrShareCode\Export\Command\ExportContactCommand;
 use GrShareCode\Export\ExportContactService;
 use GrShareCode\GrShareCodeException;
 use GrShareCode\Order\OrderCollection;
+use InvalidArgumentException;
 use Order;
+use PrestaShopDatabaseException;
+use PrestaShopLoggerCore;
 
 /**
  * Class ExportService
@@ -70,7 +74,7 @@ class ExportService
 
     /**
      * @param ExportSettings $exportSettings
-     * @throws \PrestaShopDatabaseException
+     * @throws PrestaShopDatabaseException
      */
     public function export(ExportSettings $exportSettings)
     {
@@ -109,7 +113,7 @@ class ExportService
                     )
                 );
             } catch (GrShareCodeException $e) {
-                \PrestaShopLoggerCore::addLog(
+                PrestaShopLoggerCore::addLog(
                     'Getresponse export error: ' . $e->getMessage(),
                     2,
                     null,
@@ -132,10 +136,18 @@ class ExportService
         foreach ($customerOrders as $customerOrder) {
             try {
                 $orderCollection->add(
-                    $this->orderFactory->createShareCodeOrderFromOrder(new Order($customerOrder['id_order']))
+                    $this->orderFactory->createShareCodeOrderFromOrder(
+                        new Order($customerOrder['id_order'], Configuration::get('PS_LANG_DEFAULT'))
+                    )
                 );
-            } catch (\InvalidArgumentException $e) {
-                // just skip order that contains invalid fields
+            } catch (InvalidArgumentException $e) {
+                PrestaShopLoggerCore::addLog(
+                    'Getresponse Order Failed: ' . $e->getMessage(),
+                    2,
+                    null,
+                    'GetResponse',
+                    'GetResponse'
+                );
             }
         }
 

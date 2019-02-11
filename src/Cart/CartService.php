@@ -27,6 +27,7 @@
 namespace GetResponse\Cart;
 
 use Cart;
+use Configuration;
 use Currency;
 use CurrencyCore;
 use Customer;
@@ -105,7 +106,8 @@ class CartService
 
             $getresponseProduct = $productService->createShareCodeProductFromProduct(
                 $prestashopProduct,
-                $product['quantity']
+                $product['quantity'],
+                Configuration::get('PS_LANG_DEFAULT')
             );
 
             $productsCollection->add($getresponseProduct);

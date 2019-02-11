@@ -52,22 +52,24 @@ class ProductServiceTest extends BaseTestCase
      */
     public function shouldCreateProductFromPrestashopProduct()
     {
+        $languageId = 1;
+
         $productParams = \ProductGenerator::genProductParams(\ProductGenerator::PROD_1_WITH_SKU);
 
-        $product = new Product(\ProductGenerator::PROD_1_WITH_SKU);
+        $product = new Product(\ProductGenerator::PROD_1_WITH_SKU, $languageId);
         $quantity = 2;
 
-        $grProduct = $this->productService->createShareCodeProductFromProduct($product, $quantity);
+        $grProduct = $this->productService->createShareCodeProductFromProduct($product, $quantity, 1);
 
         $this->assertEquals($productParams['id'], $grProduct->getExternalId());
-        $this->assertEquals($productParams['name'], $grProduct->getName());
+        $this->assertEquals($productParams['name'][$languageId], $grProduct->getName());
         $this->assertEquals('http://my-prestashop.com/product/' . $productParams['id'], $grProduct->getUrl());
 
         $imagesCollection = (new ProductImagesFactory)->createFromImages(
-            $product->getImages(null),
-            $product->link_rewrite
+            $product->getImages($languageId),
+            $product->link_rewrite[$languageId]
         );
-        $variantProduct = (new ProductVariantFactory)->createFromProduct($product, $imagesCollection, $quantity);
+        $variantProduct = (new ProductVariantFactory)->createFromProduct($product, $imagesCollection, $quantity, $languageId);
         $this->assertEquals($variantProduct, $grProduct->getVariants()->getIterator()->current());
     }
 }

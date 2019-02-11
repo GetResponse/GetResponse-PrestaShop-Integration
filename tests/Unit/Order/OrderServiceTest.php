@@ -119,10 +119,10 @@ class OrderServiceTest extends BaseTestCase
         $productService = new ProductFactory();
         $productsCollection = new ProductsCollection();
         $productsCollection->add(
-            $productService->createShareCodeProductFromProduct(new \Product(\ProductGenerator::PROD_1_WITH_SKU), 2)
+            $productService->createShareCodeProductFromProduct(new \Product(\ProductGenerator::PROD_1_WITH_SKU), 2, 1)
         );
         $productsCollection->add(
-            $productService->createShareCodeProductFromProduct(new \Product(\ProductGenerator::PROD_2_WITH_SKU), 1)
+            $productService->createShareCodeProductFromProduct(new \Product(\ProductGenerator::PROD_2_WITH_SKU), 1, 1)
         );
 
         $params = [

@@ -26,6 +26,7 @@
 
 namespace GetResponse\Order;
 
+use Configuration;
 use GetResponse\Product\ProductFactory;
 use GrShareCode\Address\Address as ShareCodeAddress;
 use GrShareCode\Order\Order as ShareCodeOrder;
@@ -60,7 +61,8 @@ class OrderFactory
 
             $getresponseProduct = $this->productFactory->createShareCodeProductFromProduct(
                 $prestashopProduct,
-                (int)$product['product_quantity']
+                (int)$product['product_quantity'],
+                Configuration::get('PS_LANG_DEFAULT')
             );
 
             $productsCollection->add($getresponseProduct);
