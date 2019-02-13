@@ -2,7 +2,7 @@
 <module>
 	<name>getresponse</name>
 	<displayName><![CDATA[GetResponse]]></displayName>
-	<version><![CDATA[16.5.1]]></version>
+	<version><![CDATA[16.5.2]]></version>
 	<description><![CDATA[Add your Prestashop contacts to GetResponse. Automatically follow-up new subscriptions with engaging email marketing campaigns]]></description>
 	<author><![CDATA[GetResponse]]></author>
 	<tab><![CDATA[emailing]]></tab>

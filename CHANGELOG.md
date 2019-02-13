@@ -1,5 +1,9 @@
 # Changelog
 
+## 16.5.2
+*(2019-02-13)*
+* added multi-languages handling
+
 ## 16.5.1
 *(2019-01-11)*
 * adjusted code to PrestaShop coding standards 
