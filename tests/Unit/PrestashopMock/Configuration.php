@@ -2,6 +2,8 @@
 
 class Configuration
 {
+    const DEFAULT_LANGUAGE = 1;
+
     /**
      * @param string $key
      * @return null|int
@@ -9,7 +11,7 @@ class Configuration
     public static function get($key)
     {
         if ($key === 'PS_LANG_DEFAULT') {
-            return 1;
+            return self::DEFAULT_LANGUAGE;
         }
 
         return null;

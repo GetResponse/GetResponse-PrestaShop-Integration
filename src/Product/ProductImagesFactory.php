@@ -52,7 +52,7 @@ class ProductImagesFactory
             $imagePath = (new Link())->getImageLink(
                 $productLinkRewrite,
                 $productImage['id_image'],
-                ImageType::getFormattedName('home')
+                ImageType::getFormatedName('home')
             );
             $protocol = Tools::getProtocol(Tools::usingSecureMode());
             $imagesCollection->add(new Image($protocol . $imagePath, (int)$productImage['position']));

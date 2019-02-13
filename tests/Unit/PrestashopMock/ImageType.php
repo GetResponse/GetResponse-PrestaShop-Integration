@@ -28,7 +28,7 @@
 
 class ImageType
 {
-    public static function getFormattedName($name)
+    public static function getFormatedName($name)
     {
         return $name;
     }
